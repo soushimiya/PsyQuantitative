@@ -106,7 +106,17 @@ class Main extends Sprite
 		Controls.instance = new Controls();
 		ClientPrefs.loadDefaultKeys();
 		#if ACHIEVEMENTS_ALLOWED Achievements.load(); #end
-		addChild(new FlxGame(game.width, game.height, game.initialState, #if (flixel < "5.0.0") game.zoom, #end game.framerate, game.framerate, game.skipSplash, game.startFullscreen));
+		var game = new FlxGame(game.width, game.height, game.initialState, #if (flixel < "5.0.0") game.zoom, #end game.framerate, game.framerate, game.skipSplash, game.startFullscreen);
+
+		/*
+			FlxG.game._customSoundTray wants just the class, it calls new from
+    		create() in there, which gets called when it's added to stage
+    		which is why it needs to be added before addChild(game) here
+		*/
+    	@:privateAccess
+   		game._customSoundTray = objects.SoundTray;
+
+		addChild(game);
 
 		#if !mobile
 		fpsVar = new FPSCounter(10, 3, 0xFFFFFF);

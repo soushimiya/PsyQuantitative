@@ -100,6 +100,7 @@ class HScript extends SScript
 		set('ClientPrefs', ClientPrefs);
 		#if ACHIEVEMENTS_ALLOWED
 		set('Achievements', Achievements);
+		set('BGSprite', objects.BGSprite);
 		#end
 		set('Character', Character);
 		set('Alphabet', Alphabet);
