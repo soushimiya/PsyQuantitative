@@ -389,6 +389,7 @@ class ChartingState extends MusicBeatState
 	var playSoundDad:FlxUICheckBox = null;
 	var UI_songTitle:FlxUIInputText;
 	var stageDropDown:FlxUIDropDownMenu;
+	var instDropDown:FlxUIDropDownMenu;
 	#if FLX_PITCH
 	var sliderRate:FlxUISlider;
 	#end
@@ -589,6 +590,40 @@ class ChartingState extends MusicBeatState
 		stageDropDown.selectedLabel = _song.stage;
 		blockPressWhileScrolling.push(stageDropDown);
 
+		#if MODS_ALLOWED
+		var directories:Array<String> = [Paths.mods('songs/' + currentSongName + '/'), Paths.mods(Mods.currentModDirectory + '/songs/' + currentSongName + '/'), 'assets/songs/' + currentSongName + '/'];
+		for(mod in Mods.getGlobalMods())
+			directories.push(Paths.mods(mod + '/songs/' + currentSongName + '/'));
+		#else
+		var directories:Array<String> = [Paths.getSharedPath('/songs/' + currentSongName + '/')];
+		#end
+
+		var instList:Array<String> = [];
+
+		for (i in 0...directories.length) {
+			var directory:String = directories[i];
+			if(FileSystem.exists(directory)) {
+				for (file in FileSystem.readDirectory(directory)) {
+					var path = haxe.io.Path.join([directory, file]);
+					if (!FileSystem.isDirectory(path) && file.endsWith('.ogg')) {
+						var fileToCheck:String = file.substr(0, file.length - 4);
+						if(fileToCheck.trim().length > 0) {
+							instList.push(fileToCheck);
+						}
+					}
+				}
+			}
+		}
+
+		if(instList.length < 1) instList.push('Inst');
+
+		instDropDown = new FlxUIDropDownMenu(stageDropDown.x, stageDropDown.y + 40, FlxUIDropDownMenu.makeStrIdLabelArray(instList, true), function(inst:String)
+		{
+			_song.instrumental = instList[Std.parseInt(inst)];
+		});
+		instDropDown.selectedLabel = _song.instrumental;
+		blockPressWhileScrolling.push(instDropDown);
+
 		var tab_group_song = new FlxUI(null, UI_box);
 		tab_group_song.name = "Song";
 		tab_group_song.add(UI_songTitle);
@@ -611,10 +646,12 @@ class ChartingState extends MusicBeatState
 		tab_group_song.add(new FlxText(gfVersionDropDown.x, gfVersionDropDown.y - 15, 0, 'Girlfriend:'));
 		tab_group_song.add(new FlxText(player1DropDown.x, player1DropDown.y - 15, 0, 'Boyfriend:'));
 		tab_group_song.add(new FlxText(stageDropDown.x, stageDropDown.y - 15, 0, 'Stage:'));
+		tab_group_song.add(new FlxText(instDropDown.x, instDropDown.y - 15, 0, 'Instrumental:'));
 		tab_group_song.add(player2DropDown);
 		tab_group_song.add(gfVersionDropDown);
 		tab_group_song.add(player1DropDown);
 		tab_group_song.add(stageDropDown);
+		tab_group_song.add(instDropDown);
 
 		UI_box.addGroup(tab_group_song);
 
@@ -1505,7 +1542,7 @@ class ChartingState extends MusicBeatState
 	}
 
 	function generateSong() {
-		FlxG.sound.playMusic(Paths.inst(currentSongName), 0.6/*, false*/);
+		FlxG.sound.playMusic(Paths.inst(currentSongName, _song.instrumental), 0.6/*, false*/);
 		FlxG.sound.music.autoDestroy = false;
 		if (instVolume != null) FlxG.sound.music.volume = instVolume.value;
 		if (check_mute_inst != null && check_mute_inst.checked) FlxG.sound.music.volume = 0;

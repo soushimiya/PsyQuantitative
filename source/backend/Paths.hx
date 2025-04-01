@@ -207,9 +207,9 @@ class Paths
 		return voices;
 	}
 
-	inline static public function inst(song:String):Any
+	inline static public function inst(song:String, key:String = "Inst"):Any
 	{
-		var songKey:String = '${formatToSongPath(song)}/Inst';
+		var songKey:String = '${formatToSongPath(song)}/$key';
 		var inst = returnSound(null, songKey, 'songs');
 		return inst;
 	}

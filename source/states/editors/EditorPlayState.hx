@@ -341,7 +341,7 @@ class EditorPlayState extends MusicBeatSubstate
 		FlxG.sound.list.add(vocals);
 		FlxG.sound.list.add(opponentVocals);
 
-		inst = new FlxSound().loadEmbedded(Paths.inst(songData.song));
+		inst = new FlxSound().loadEmbedded(Paths.inst(songData.song, songData.instrumental));
 		FlxG.sound.list.add(inst);
 		FlxG.sound.music.volume = 0;
 

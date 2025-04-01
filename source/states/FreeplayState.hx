@@ -335,7 +335,7 @@ class FreeplayState extends MusicBeatState
 					vocals = null;
 				}
 
-				FlxG.sound.playMusic(Paths.inst(PlayState.SONG.song), 0.8);
+				FlxG.sound.playMusic(Paths.inst(PlayState.SONG.song, PlayState.SONG.instrumental), 0.8);
 				if(vocals != null) //Sync vocals to Inst
 				{
 					vocals.play();

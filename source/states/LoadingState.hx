@@ -134,7 +134,7 @@ class LoadingState extends MusicBeatState
 	
 	static function getSongPath()
 	{
-		return Paths.inst(PlayState.SONG.song);
+		return Paths.inst(PlayState.SONG.song, PlayState.SONG.instrumental);
 	}
 	
 	static function getVocalPath()

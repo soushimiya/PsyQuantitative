@@ -8,6 +8,7 @@ import backend.Section;
 typedef SwagSong =
 {
 	var song:String;
+	@:optional var instrumental:String;
 	var notes:Array<SwagSection>;
 	var events:Array<Dynamic>;
 	var bpm:Float;
@@ -33,6 +34,7 @@ typedef SwagSong =
 class Song
 {
 	public var song:String;
+	public var instrumental:String;
 	public var notes:Array<SwagSection>;
 	public var events:Array<Dynamic>;
 	public var bpm:Float;
@@ -57,6 +59,8 @@ class Song
 			songJson.gfVersion = songJson.player3;
 			songJson.player3 = null;
 		}
+		if(songJson.instrumental == null)
+			songJson.instrumental = "Inst";
 
 		if(songJson.events == null)
 		{
