@@ -369,6 +369,7 @@ class PlayState extends MusicBeatState
 		dadGroup = new FlxSpriteGroup(DAD_X, DAD_Y);
 		gfGroup = new FlxSpriteGroup(GF_X, GF_Y);
 
+		/*
 		switch (curStage)
 		{
 			case 'philly': new states.stages.Philly(); //Week 3
@@ -379,6 +380,7 @@ class PlayState extends MusicBeatState
 			case 'schoolEvil': new states.stages.SchoolEvil(); //Week 6 - Thorns
 			case 'tank': new states.stages.Tank(); //Week 7 - Ugh, Guns, Stress
 		}
+		*/
 
 		if(isPixelStage) {
 			introSoundsSuffix = '-pixel';

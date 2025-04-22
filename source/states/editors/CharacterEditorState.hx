@@ -450,7 +450,7 @@ class CharacterEditorState extends MusicBeatState
 			if(intended == null || intended.length < 1) return;
 
 			var characterPath:String = 'characters/$intended.json';
-			var path:String = Paths.getPath(characterPath, TEXT, null, true);
+			var path:String = Paths.getPath(characterPath);
 			#if MODS_ALLOWED
 			if (FileSystem.exists(path))
 			#else
@@ -782,14 +782,14 @@ class CharacterEditorState extends MusicBeatState
 		character.color = FlxColor.WHITE;
 		character.alpha = 1;
 
-		if(Paths.fileExists('images/' + character.imageFile + '/Animation.json', TEXT))
+		if(Paths.fileExists('images/' + character.imageFile + '/Animation.json'))
 		{
 			character.atlas = new FlxAnimate(0, 0, Paths.getPath('images/${character.imageFile}'));
 			character.atlas.showPivot = false;
 			character.isAnimateAtlas = true;
 		}
-		else if(Paths.fileExists('images/' + character.imageFile + '.txt', TEXT)) character.frames = Paths.getPackerAtlas(character.imageFile);
-		else if(Paths.fileExists('images/' + character.imageFile + '.json', TEXT)) character.frames = Paths.getAsepriteAtlas(character.imageFile);
+		else if(Paths.fileExists('images/' + character.imageFile + '.txt')) character.frames = Paths.getPackerAtlas(character.imageFile);
+		else if(Paths.fileExists('images/' + character.imageFile + '.json')) character.frames = Paths.getAsepriteAtlas(character.imageFile);
 		else character.frames = Paths.getSparrowAtlas(character.imageFile);
 
 		for (anim in anims) {
