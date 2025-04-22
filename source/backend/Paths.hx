@@ -23,7 +23,6 @@ import backend.Mods;
 
 class Paths
 {
-	inline public static var SOUND_EXT = #if web "mp3" #else "ogg" #end;
 	inline public static var VIDEO_EXT = "mp4";
 
 	public static function excludeAsset(key:String) {
@@ -31,7 +30,7 @@ class Paths
 			dumpExclusions.push(key);
 	}
 
-	public static var dumpExclusions:Array<String> = ['assets/music/freakyMenu.$SOUND_EXT'];
+	public static var dumpExclusions:Array<String> = ['assets/music/freakyMenu.ogg'];
 	/// haya I love you for the base cache dump I took to the max
 	public static function clearUnusedMemory() {
 		// clear non local assets in the tracked assets list
@@ -349,7 +348,7 @@ class Paths
 	public static var currentTrackedSounds:Map<String, Sound> = [];
 	public static function returnSound(path:String) {
 		
-		var file:String = getPath(path + "." + SOUND_EXT);
+		var file:String = getPath(path + ".ogg");
 		if(FileSystem.exists(file)) {
 			if(!currentTrackedSounds.exists(file))
 			{
@@ -381,7 +380,7 @@ class Paths
 	}
 
 	inline static public function modsSounds(path:String, key:String) {
-		return modFolders(path + '/' + key + '.' + SOUND_EXT);
+		return modFolders(path + '/' + key + '.ogg');
 	}
 
 	inline static public function modsImages(key:String) {
