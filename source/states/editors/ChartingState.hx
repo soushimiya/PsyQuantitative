@@ -19,12 +19,11 @@ import flixel.ui.FlxButton;
 
 import flixel.util.FlxSort;
 import lime.media.AudioBuffer;
-import lime.utils.Assets;
 import openfl.events.Event;
 import openfl.events.IOErrorEvent;
 import openfl.media.Sound;
 import openfl.net.FileReference;
-import openfl.utils.Assets as OpenFlAssets;
+import openfl.utils.Assets;
 
 import backend.Song;
 import backend.Section;
@@ -438,12 +437,7 @@ class ChartingState extends MusicBeatState
 		{
 
 			var songName:String = Paths.formatToSongPath(_song.song);
-			var file:String = Paths.json(songName + '/events');
-			#if sys
-			if (#if MODS_ALLOWED FileSystem.exists(Paths.modsJson(songName + '/events')) || #end FileSystem.exists(file))
-			#else
-			if (OpenFlAssets.exists(file))
-			#end
+			if (Assets.exists(Paths.json(songName + '/events')))
 			{
 				clearEvents();
 				var events:SwagSong = Song.loadFromJson('events', songName);
@@ -650,8 +644,9 @@ class ChartingState extends MusicBeatState
 		tab_group_song.add(player2DropDown);
 		tab_group_song.add(gfVersionDropDown);
 		tab_group_song.add(player1DropDown);
-		tab_group_song.add(stageDropDown);
+		// shitty layering for visuals (btw its not working)
 		tab_group_song.add(instDropDown);
+		tab_group_song.add(stageDropDown);
 
 		UI_box.addGroup(tab_group_song);
 
@@ -1890,7 +1885,6 @@ class ChartingState extends MusicBeatState
 				if(opponentVocals != null) opponentVocals.stop();
 
 				//if(_song.stage == null) _song.stage = stageDropDown.selectedLabel;
-				StageData.loadDirectory(_song);
 				LoadingState.loadAndSwitchState(new PlayState());
 			}
 
@@ -2691,27 +2685,15 @@ class ChartingState extends MusicBeatState
 	function loadCharacterFile(char:String):CharacterFile {
 		characterFailed = false;
 		var characterPath:String = 'characters/' + char + '.json';
-		#if MODS_ALLOWED
-		var path:String = Paths.modFolders(characterPath);
-		if (!FileSystem.exists(path)) {
-			path = Paths.getPath(characterPath);
-		}
 
-		if (!FileSystem.exists(path))
-		#else
 		var path:String = Paths.getPath(characterPath);
-		if (!OpenFlAssets.exists(path))
-		#end
+		if (!Assets.exists(path))
 		{
 			path = Paths.getPath('characters/' + Character.DEFAULT_CHARACTER + '.json'); //If a character couldn't be found, change him to BF just to prevent a crash
 			characterFailed = true;
 		}
 
-		#if MODS_ALLOWED
-		var rawJson = File.getContent(path);
-		#else
-		var rawJson = OpenFlAssets.getText(path);
-		#end
+		var rawJson = Assets.getText(path);
 		return cast Json.parse(rawJson);
 	}
 

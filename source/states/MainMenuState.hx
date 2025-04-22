@@ -165,8 +165,9 @@ class MainMenuState extends MusicBeatState
 							case 'story_mode':
 								MusicBeatState.switchState(new StoryMenuState());
 							case 'freeplay':
-								persistentUpdate = false;
-								openSubState(new FreeplaySubState());
+								//persistentUpdate = false;
+								//openSubState(new FreeplaySubState(true));
+								MusicBeatState.switchState(new FreeplayState());
 
 							#if ACHIEVEMENTS_ALLOWED
 							case 'awards':
