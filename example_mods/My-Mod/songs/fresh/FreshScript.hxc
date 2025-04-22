@@ -1,0 +1,7 @@
+class FreshScript extends SongScript
+{
+    override public function new(song:String)
+    {
+        super("fresh");
+    }
+}

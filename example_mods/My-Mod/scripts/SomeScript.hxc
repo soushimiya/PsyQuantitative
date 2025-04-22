@@ -1,0 +1,6 @@
+class SomeScript extends GlobalScript
+{
+    override public function new()
+    {
+    }
+}

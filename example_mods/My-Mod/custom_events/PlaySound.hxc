@@ -1,0 +1,9 @@
+class PlaySound extends Event
+{
+    override function onEvent(value1:String, value2:String)
+    {
+        super.onEvent(value1, value2);
+
+        FlxG.sound.play(Paths.sound(value1), Std.parseFloat(value2));
+    }
+}
