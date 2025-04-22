@@ -32,7 +32,7 @@ class Paths
 			dumpExclusions.push(key);
 	}
 
-	public static var dumpExclusions:Array<String> = ['assets/shared/music/freakyMenu.$SOUND_EXT'];
+	public static var dumpExclusions:Array<String> = ['assets/music/freakyMenu.$SOUND_EXT'];
 	/// haya I love you for the base cache dump I took to the max
 	public static function clearUnusedMemory() {
 		// clear non local assets in the tracked assets list
@@ -89,57 +89,18 @@ class Paths
 		#if !html5 openfl.Assets.cache.clear("songs"); #end
 	}
 
-	static public var currentLevel:String;
-	static public function setCurrentLevel(name:String)
-	{
-		currentLevel = name.toLowerCase();
-	}
-
-	public static function getPath(file:String, ?type:AssetType = TEXT, ?library:Null<String> = null, ?modsAllowed:Bool = false):String
+	public static function getPath(?file:String = "", ?type:AssetType = TEXT, ?library:Null<String> = null, ?modsAllowed:Bool = false):String
 	{
 		#if MODS_ALLOWED
 		if(modsAllowed)
 		{
-			var customFile:String = file;
-			if (library != null)
-				customFile = '$library/$file';
-
-			var modded:String = modFolders(customFile);
-			if(FileSystem.exists(modded)) return modded;
+			var modded:String = modFolders(file);
+			if(FileSystem.exists(modded))
+				return modded;
 		}
 		#end
 
-		if (library != null)
-			return getLibraryPath(file, library);
-
-		if (currentLevel != null)
-		{
-			var levelPath:String = '';
-			if(currentLevel != 'shared') {
-				levelPath = getLibraryPathForce(file, 'week_assets', currentLevel);
-				if (OpenFlAssets.exists(levelPath, type))
-					return levelPath;
-			}
-		}
-
-		return getSharedPath(file);
-	}
-
-	static public function getLibraryPath(file:String, library = "shared")
-	{
-		return if (library == "shared") getSharedPath(file); else getLibraryPathForce(file, library);
-	}
-
-	inline static function getLibraryPathForce(file:String, library:String, ?level:String)
-	{
-		if(level == null) level = library;
-		var returnPath = '$library:assets/$level/$file';
-		return returnPath;
-	}
-
-	inline public static function getSharedPath(file:String = '')
-	{
-		return 'assets/shared/$file';
+		return 'assets/$file';
 	}
 
 	inline static public function txt(key:String, ?library:String)
@@ -294,18 +255,8 @@ class Paths
 			return File.getContent(modFolders(key));
 		#end
 
-		if (FileSystem.exists(getSharedPath(key)))
-			return File.getContent(getSharedPath(key));
-
-		if (currentLevel != null)
-		{
-			var levelPath:String = '';
-			if(currentLevel != 'shared') {
-				levelPath = getLibraryPathForce(key, 'week_assets', currentLevel);
-				if (FileSystem.exists(levelPath))
-					return File.getContent(levelPath);
-			}
-		}
+		if (FileSystem.exists(getPath(key)))
+			return File.getContent(getPath(key));
 		#end
 		var path:String = getPath(key, TEXT);
 		if(OpenFlAssets.exists(path, TEXT)) return Assets.getText(path);
@@ -456,7 +407,7 @@ class Paths
 		if(!currentTrackedSounds.exists(gottenPath))
 		{
 			var retKey:String = (path != null) ? '$path/$key' : key;
-			retKey = ((path == 'songs') ? 'songs:' : '') + getPath('$retKey.$SOUND_EXT', SOUND, library);
+			retKey = getPath('$retKey.$SOUND_EXT', SOUND, library);
 			if(OpenFlAssets.exists(retKey, SOUND))
 			{
 				currentTrackedSounds.set(gottenPath, OpenFlAssets.getSound(retKey));

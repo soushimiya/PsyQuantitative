@@ -1036,9 +1036,6 @@ class CharacterEditorState extends MusicBeatState
 	final assetFolder = 'week1';  //load from assets/week1/
 	inline function loadBG()
 	{
-		var lastLoaded = Paths.currentLevel;
-		Paths.currentLevel = assetFolder;
-
 		/////////////
 		// bg data //
 		/////////////
@@ -1053,8 +1050,6 @@ class CharacterEditorState extends MusicBeatState
 		dadPosition.set(100, 100);
 		bfPosition.set(770, 100);
 		/////////////
-
-		Paths.currentLevel = lastLoaded;
 	}
 
 
@@ -1188,8 +1183,8 @@ class CharacterEditorState extends MusicBeatState
 
 	var characterList:Array<String> = [];
 	function reloadCharacterDropDown() {
-		characterList = Mods.mergeAllTextsNamed('data/characterList.txt', Paths.getSharedPath());
-		var foldersToCheck:Array<String> = Mods.directoriesWithFile(Paths.getSharedPath(), 'characters/');
+		characterList = Mods.mergeAllTextsNamed('data/characterList.txt', Paths.getPath());
+		var foldersToCheck:Array<String> = Mods.directoriesWithFile(Paths.getPath(), 'characters/');
 		for (folder in foldersToCheck)
 			for (file in FileSystem.readDirectory(folder))
 				if(file.toLowerCase().endsWith('.json'))
