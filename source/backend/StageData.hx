@@ -28,7 +28,7 @@ class StageData {
 			directory: "",
 			defaultZoom: 0.9,
 			isPixelStage: false,
-			stageUI: "normal",
+			stageUI: "default",
 
 			boyfriend: [770, 100],
 			girlfriend: [400, 130],

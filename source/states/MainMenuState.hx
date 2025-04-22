@@ -6,6 +6,7 @@ import flixel.effects.FlxFlicker;
 import lime.app.Application;
 import states.editors.MasterEditorMenu;
 import options.OptionsState;
+import substates.FreeplaySubState;
 
 class MainMenuState extends MusicBeatState
 {
@@ -164,7 +165,8 @@ class MainMenuState extends MusicBeatState
 							case 'story_mode':
 								MusicBeatState.switchState(new StoryMenuState());
 							case 'freeplay':
-								MusicBeatState.switchState(new FreeplayState());
+								persistentUpdate = false;
+								openSubState(new FreeplaySubState());
 
 							#if ACHIEVEMENTS_ALLOWED
 							case 'awards':
